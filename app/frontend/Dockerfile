@@ -5,9 +5,10 @@ COPY . .
 
 RUN go mod download && go mod verify
 
-RUN CGO_ENABLED=0 go build -o /go/bin/app
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /go/bin/app
 
 FROM gcr.io/distroless/static-debian12
 
 COPY --from=build /go/bin/app /
+
 CMD ["/app"]
